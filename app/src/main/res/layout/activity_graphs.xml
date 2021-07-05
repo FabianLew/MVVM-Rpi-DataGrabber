@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".GraphsActivity">
+    tools:context=".view.GraphsActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,27 +36,39 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-        <com.jjoe64.graphview.GraphView
-            android:id="@+id/graph1"
-            android:layout_width="wrap_content"
-            android:layout_height="200dp"
-            android:layout_marginTop="20dp" />
+            <com.jjoe64.graphview.GraphView
+                android:id="@+id/pressureGraph"
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:layout_marginTop="20dp" />
 
-
-        <com.jjoe64.graphview.GraphView
-            android:id="@+id/graph2"
-            android:layout_width="wrap_content"
-            android:layout_height="200dp"
-            android:layout_marginTop="20dp" />
 
             <com.jjoe64.graphview.GraphView
-                android:id="@+id/graph3"
+                android:id="@+id/humidityGraph"
                 android:layout_width="wrap_content"
                 android:layout_height="200dp"
                 android:layout_marginTop="20dp" />
 
             <com.jjoe64.graphview.GraphView
-                android:id="@+id/graph4"
+                android:id="@+id/temperatureGraph"
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:layout_marginTop="20dp" />
+
+            <com.jjoe64.graphview.GraphView
+                android:id="@+id/yawGraph"
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:layout_marginTop="20dp" />
+
+            <com.jjoe64.graphview.GraphView
+                android:id="@+id/pitchGraph"
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:layout_marginTop="20dp" />
+
+            <com.jjoe64.graphview.GraphView
+                android:id="@+id/rollGraph"
                 android:layout_width="wrap_content"
                 android:layout_height="200dp"
                 android:layout_marginTop="20dp" />

@@ -15,7 +15,7 @@ public class ServerIoT {
     }
 
     public String getFileUrl(){
-        return "http://" + ip + "/chartdata_desktop.json";
+        return "http://" + ip + "/resource.php";
     }
 }
 
