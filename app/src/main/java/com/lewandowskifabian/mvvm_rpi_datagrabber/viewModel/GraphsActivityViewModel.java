@@ -1,6 +1,8 @@
 package com.lewandowskifabian.mvvm_rpi_datagrabber.viewModel;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
@@ -17,6 +19,7 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import com.lewandowskifabian.mvvm_rpi_datagrabber.R;
 import com.lewandowskifabian.mvvm_rpi_datagrabber.model.ServerDataModel;
 import com.lewandowskifabian.mvvm_rpi_datagrabber.model.ServerIoT;
+import com.lewandowskifabian.mvvm_rpi_datagrabber.view.ConfigActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,9 +28,12 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static androidx.core.app.ActivityCompat.startActivityForResult;
+
 public class GraphsActivityViewModel extends ViewModel {
     //Server
     private ServerIoT serverIoT;
+    private String ip = "192.168.33.5";
 
     //Timer
     private Timer timer;
@@ -44,16 +50,31 @@ public class GraphsActivityViewModel extends ViewModel {
     private LineGraphSeries<DataPoint>pitchData= new LineGraphSeries<>(new DataPoint[]{});
     private LineGraphSeries<DataPoint>rollData= new LineGraphSeries<>(new DataPoint[]{});
 
+    public boolean buttonState = true; // Set true when button state is Start and false if its Stop
+    private boolean firstInit = true;
+
+    public void stopTimer(){
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+    }
 
     public void Init(Context context, GraphView graph1, GraphView graph2, GraphView graph3, GraphView graph4, GraphView graph5, GraphView graph6){
-        serverIoT = new ServerIoT("192.168.33.5",context.getApplicationContext());
-        configGraph(graph1,pressureData,"Pressure[mBar] / Time[s]",10.0, 1300.0);
-        configGraph(graph2,humidityData,"Humidity[%] / Time[s]", 10.0, 105.0);
-        configGraph(graph3, temperatureData, "Temperature[degC] / Time[s]", 10.0, 107.0);
-        configGraph(graph4, yawData,"Yaw[deg] / Time[s]", 10.0, 365.0);
-        configGraph(graph5,pitchData, "Pitch[deg] / Time[s]", 10.0, 365.0);
-        configGraph(graph6,rollData,"Roll[deg] / Time[s]", 10.0, 365.0);
-        startTimer(graph1, graph2, graph3, graph4, graph5, graph6);
+        if (firstInit) {
+            serverIoT = new ServerIoT(ip, context.getApplicationContext());
+            configGraph(graph1, pressureData, "Pressure[mBar] / Time[s]", 10.0, 1300.0);
+            configGraph(graph2, humidityData, "Humidity[%] / Time[s]", 10.0, 105.0);
+            configGraph(graph3, temperatureData, "Temperature[degC] / Time[s]", 10.0, 107.0);
+            configGraph(graph4, yawData, "Yaw[deg] / Time[s]", 10.0, 365.0);
+            configGraph(graph5, pitchData, "Pitch[deg] / Time[s]", 10.0, 365.0);
+            configGraph(graph6, rollData, "Roll[deg] / Time[s]", 10.0, 365.0);
+            startTimer(graph1, graph2, graph3, graph4, graph5, graph6);
+            firstInit = false;
+        }
+        else{
+            startTimer(graph1, graph2, graph3, graph4, graph5, graph6);
+        }
     }
 
     private void configGraph(GraphView graph, LineGraphSeries<DataPoint> lineGraphSeries, String title, double width, double height){
@@ -64,9 +85,6 @@ public class GraphsActivityViewModel extends ViewModel {
         graph.getViewport().setXAxisBoundsManual(true);
         graph.getViewport().setYAxisBoundsManual(true);
     }
-
-
-
 
     private void sendGetRequest(LineGraphSeries<DataPoint> lineGraphSeries, GraphView graph1, String url){
         String errorMessage = "sndGetRequest failed";
@@ -88,14 +106,12 @@ public class GraphsActivityViewModel extends ViewModel {
 
     private void responseHandling(JSONObject json, LineGraphSeries<DataPoint> lineGraphSeries, GraphView graph1) {
             if (timer != null) {
-                long requestTimerCurrentTime = SystemClock.uptimeMillis();
-                currentRequestTime += sampleTime;
                 double timeStamp = currentRequestTime / 1000.0;
                 ServerDataModel data;
-                    data = new ServerDataModel(json);
-                    boolean scrollGraph = (timeStamp > 10.0);
-                    lineGraphSeries.appendData(new DataPoint(timeStamp, data.getData()), scrollGraph, 1000);
-                    graph1.onDataChanged(true, true);
+                data = new ServerDataModel(json);
+                boolean scrollGraph = (timeStamp > 10.0);
+                lineGraphSeries.appendData(new DataPoint(timeStamp, data.getData()), scrollGraph, 1000);
+                graph1.onDataChanged(true, true);
             }
     }
 
@@ -112,14 +128,36 @@ public class GraphsActivityViewModel extends ViewModel {
             @Override
             public void run() {
                 handler.post( () -> {
+                    //TODO: Set correct URL's
                     sendGetRequest(pressureData, graph1, serverIoT.getFileUrl());
                     sendGetRequest(humidityData, graph2, serverIoT.getFileUrl());
                     sendGetRequest(temperatureData, graph3, serverIoT.getFileUrl());
                     sendGetRequest(yawData,graph4, serverIoT.getFileUrl());
                     sendGetRequest(pitchData,graph5, serverIoT.getFileUrl());
                     sendGetRequest(rollData,graph6, serverIoT.getFileUrl());
+                    currentRequestTime += sampleTime;
                 });
             }
         };
+    }
+
+    public String setSampleTimeText(){
+        return "Sample time: " + String.valueOf(sampleTime) + "ms";
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public int getSampleTime() {
+        return sampleTime;
+    }
+
+    public void setSampleTime(int sampleTime) {
+        this.sampleTime = sampleTime;
     }
 }
