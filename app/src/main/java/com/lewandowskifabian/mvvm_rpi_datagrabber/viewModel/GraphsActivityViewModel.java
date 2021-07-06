@@ -107,8 +107,8 @@ public class GraphsActivityViewModel extends ViewModel {
     private void responseHandling(JSONObject json, LineGraphSeries<DataPoint> lineGraphSeries, GraphView graph1) {
             if (timer != null) {
                 double timeStamp = currentRequestTime / 1000.0;
-                ServerDataModel data;
-                data = new ServerDataModel(json);
+                ServerDataViewModel data;
+                data = new ServerDataModel(json).toVM();
                 boolean scrollGraph = (timeStamp > 10.0);
                 lineGraphSeries.appendData(new DataPoint(timeStamp, data.getData()), scrollGraph, 1000);
                 graph1.onDataChanged(true, true);

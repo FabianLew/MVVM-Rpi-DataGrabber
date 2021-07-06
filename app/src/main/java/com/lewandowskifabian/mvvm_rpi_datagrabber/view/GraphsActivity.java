@@ -19,14 +19,13 @@ import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
 import com.lewandowskifabian.mvvm_rpi_datagrabber.R;
-import com.lewandowskifabian.mvvm_rpi_datagrabber.databinding.ActivityGraphsBinding;
 import com.lewandowskifabian.mvvm_rpi_datagrabber.viewModel.GraphsActivityViewModel;
 
 public class GraphsActivity extends AppCompatActivity {
 
     private GraphsActivityViewModel viewModel;
     private GraphView pressureGraph, humidityGraph, temperatureGraph, yawGraph, pitchGraph, rollGraph;
-    private Button changeStateButton, configButton;
+    private Button changeStateButton, configButton, nextViewButton;
     private TextView sampleTime;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +43,7 @@ public class GraphsActivity extends AppCompatActivity {
         //Buttons initialization
         changeStateButton = (Button)findViewById(R.id.stateButton);
         configButton = (Button)findViewById(R.id.configButton);
+        nextViewButton = (Button)findViewById(R.id.nextViewButton);
 
         //Text Views
         sampleTime = (TextView)findViewById(R.id.sampleTimeText);
@@ -72,6 +72,14 @@ public class GraphsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 openConfigActivity();
+            }
+        });
+
+        nextViewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GraphsActivity.this, ListViewActivity.class);
+                startActivity(intent);
             }
         });
     }

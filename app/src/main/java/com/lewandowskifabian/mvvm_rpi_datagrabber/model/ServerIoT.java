@@ -17,5 +17,9 @@ public class ServerIoT {
     public String getFileUrl(){
         return "http://" + ip + "/resource.php";
     }
+
+    public String getListUrl(){
+        return  "http://" + ip + "/datalist.json";
+    }
 }
 

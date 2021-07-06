@@ -29,10 +29,12 @@
             android:text="Config"/>
 
         <Button
+            android:id="@+id/nextViewButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_margin="8dp"/>
+            android:layout_margin="8dp"
+            android:text="List View ->"/>
 
     </LinearLayout>
 

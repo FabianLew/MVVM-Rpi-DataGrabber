@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MVVMRpiDataGrabber">
-        <activity android:name=".view.ConfigActivity"></activity>
+        <activity android:name=".view.ListViewActivity"></activity>
+        <activity android:name=".view.ConfigActivity" />
         <activity android:name=".view.GraphsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
