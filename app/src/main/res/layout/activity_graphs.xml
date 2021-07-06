@@ -18,6 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="8dp"
+            android:textSize="11dp"
             android:text="Start"/>
 
         <Button
@@ -26,6 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="8dp"
+            android:textSize="11dp"
             android:text="Config"/>
 
         <Button
@@ -34,6 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="8dp"
+            android:textSize="11dp"
             android:text="List View ->"/>
 
     </LinearLayout>

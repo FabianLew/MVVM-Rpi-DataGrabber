@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.ConfigActivity"
+    android:layout_margin="16dp"
     android:orientation="vertical">
 
     <com.google.android.material.textfield.TextInputEditText
