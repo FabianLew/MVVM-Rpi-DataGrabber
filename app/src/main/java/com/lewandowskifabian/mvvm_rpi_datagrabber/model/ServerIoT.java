@@ -34,6 +34,10 @@ public class ServerIoT {
         return "http://" + ip + "/led_display.php";
     }
 
+    public String getJoystickUtl(){
+        return "http://" + ip + "/datajoystick123.json";
+    }
+
     public void putControlRequest(JSONArray data) {
         JsonArrayRequest putRequest = new JsonArrayRequest(Request.Method.PUT, getLedScriptUrl(), data,
                 new Response.Listener<JSONArray>() {

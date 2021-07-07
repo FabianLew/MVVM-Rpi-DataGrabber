@@ -36,7 +36,6 @@ public class ListViewViewModel extends ViewModel {
         serverIoT = new ServerIoT("192.168.33.5",context.getApplicationContext());
         vmList = new ArrayList<>(6);
         adapter = new MeasurementsAdapter(vmList);
-//        startTimer();
     }
 
     public void startTimer(){

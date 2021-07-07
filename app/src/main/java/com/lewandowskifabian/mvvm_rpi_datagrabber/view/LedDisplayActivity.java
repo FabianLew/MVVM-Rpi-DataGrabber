@@ -2,6 +2,7 @@ package com.lewandowskifabian.mvvm_rpi_datagrabber.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -30,7 +31,7 @@ public class LedDisplayActivity extends AppCompatActivity {
 
     private View colorView;
     private EditText urlText;
-    private Button sendBtn, clearBtn;
+    private Button sendBtn, clearBtn, nextBtn,prevBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +59,8 @@ public class LedDisplayActivity extends AppCompatActivity {
 
         sendBtn = (Button)findViewById(R.id.sendBtn);
         clearBtn = (Button)findViewById(R.id.clearBtn);
+        prevBtn = (Button)findViewById(R.id.prevBtn2);
+        nextBtn = (Button)findViewById(R.id.nextBtn2);
 
         SeekBar redSeekBar = (SeekBar) findViewById(R.id.seekBarR);
         redSeekBar.setMax(255);
@@ -121,6 +124,21 @@ public class LedDisplayActivity extends AppCompatActivity {
                 }
             }
         });
+
+        prevBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        nextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LedDisplayActivity.this, JoystickActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private RelativeLayout addLedIndicatorToTableLayout(int x, int y)
@@ -167,10 +185,6 @@ public class LedDisplayActivity extends AppCompatActivity {
     }
 
     private final View.OnClickListener led_onClick = new View.OnClickListener() {
-        /**
-         * @brief LED indicator onClick event handling procedure
-         * @param v LED indicator View element
-         */
         @Override
         public void onClick(View v) {
             // Set active color as background

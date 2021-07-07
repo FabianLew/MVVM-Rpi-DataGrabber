@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MVVMRpiDataGrabber">
-        <activity android:name=".view.LedDisplayActivity"></activity>
+        <activity android:name=".view.JoystickActivity"></activity>
+        <activity android:name=".view.LedDisplayActivity" />
         <activity android:name=".view.ListViewActivity" />
         <activity android:name=".view.ConfigActivity" />
         <activity android:name=".view.GraphsActivity">
