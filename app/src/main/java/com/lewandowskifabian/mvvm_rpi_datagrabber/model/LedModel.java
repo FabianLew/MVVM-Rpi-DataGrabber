@@ -17,6 +17,12 @@ public class LedModel {
         B = null;
     }
 
+    public void clearColor(){
+        R = 0;
+        G = 0;
+        B = 0;
+    }
+
 
     private int getR(){
         if(R != null)

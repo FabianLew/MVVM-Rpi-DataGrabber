@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
 import com.lewandowskifabian.mvvm_rpi_datagrabber.R;
+import com.lewandowskifabian.mvvm_rpi_datagrabber.model.ServerIoT;
 import com.lewandowskifabian.mvvm_rpi_datagrabber.viewModel.GraphsActivityViewModel;
 
 public class GraphsActivity extends AppCompatActivity {
@@ -51,6 +52,8 @@ public class GraphsActivity extends AppCompatActivity {
 
         viewModel = new ViewModelProvider(this).get(GraphsActivityViewModel.class);
         sampleTime.setText(viewModel.setSampleTimeText());
+
+        viewModel.serverIoT =  new ServerIoT(this);
 
         changeStateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,7 +90,7 @@ public class GraphsActivity extends AppCompatActivity {
     private void openConfigActivity() {
         Intent intent = new Intent(this, ConfigActivity.class);
         Bundle configBundle = new Bundle();
-        configBundle.putString("ip", viewModel.getIp());
+        configBundle.putString("ip", viewModel.serverIoT.ip);
         configBundle.putInt("sampleTime", viewModel.getSampleTime());
         intent.putExtras(configBundle);
         mGetContent.launch(intent);

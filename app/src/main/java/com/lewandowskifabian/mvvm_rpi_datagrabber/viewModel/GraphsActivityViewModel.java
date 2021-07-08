@@ -1,11 +1,7 @@
 package com.lewandowskifabian.mvvm_rpi_datagrabber.viewModel;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
-import android.os.SystemClock;
-import android.util.Log;
 
 import androidx.lifecycle.ViewModel;
 
@@ -16,24 +12,17 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
-import com.lewandowskifabian.mvvm_rpi_datagrabber.R;
 import com.lewandowskifabian.mvvm_rpi_datagrabber.model.ServerDataModel;
 import com.lewandowskifabian.mvvm_rpi_datagrabber.model.ServerIoT;
-import com.lewandowskifabian.mvvm_rpi_datagrabber.view.ConfigActivity;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static androidx.core.app.ActivityCompat.startActivityForResult;
-
 public class GraphsActivityViewModel extends ViewModel {
     //Server
-    private ServerIoT serverIoT;
-    private String ip = "192.168.33.5";
+    public ServerIoT serverIoT;
 
     //Timer
     private Timer timer;
@@ -62,7 +51,6 @@ public class GraphsActivityViewModel extends ViewModel {
 
     public void Init(Context context, GraphView graph1, GraphView graph2, GraphView graph3, GraphView graph4, GraphView graph5, GraphView graph6){
         if (firstInit) {
-            serverIoT = new ServerIoT(ip, context.getApplicationContext());
             configGraph(graph1, pressureData, "Pressure[mBar] / Time[s]", 10.0, 1300.0);
             configGraph(graph2, humidityData, "Humidity[%] / Time[s]", 10.0, 105.0);
             configGraph(graph3, temperatureData, "Temperature[degC] / Time[s]", 10.0, 107.0);
@@ -92,7 +80,7 @@ public class GraphsActivityViewModel extends ViewModel {
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        responseHandling(response, lineGraphSeries, graph1);
+                        updatePlot(response, lineGraphSeries, graph1);
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -104,7 +92,7 @@ public class GraphsActivityViewModel extends ViewModel {
     }
 
 
-    private void responseHandling(JSONObject json, LineGraphSeries<DataPoint> lineGraphSeries, GraphView graph1) {
+    private void updatePlot(JSONObject json, LineGraphSeries<DataPoint> lineGraphSeries, GraphView graph1) {
             if (timer != null) {
                 double timeStamp = currentRequestTime / 1000.0;
                 ServerDataViewModel data;
@@ -118,23 +106,22 @@ public class GraphsActivityViewModel extends ViewModel {
     private void startTimer(GraphView graph1, GraphView graph2, GraphView graph3, GraphView graph4, GraphView graph5, GraphView graph6){
         if(timer == null) {
             timer = new Timer();
-            handleTimerTask(graph1,graph2,graph3,graph4,graph5,graph6);
+            updatePlotsWithServerResponse(graph1,graph2,graph3,graph4,graph5,graph6);
             timer.schedule(timerTask, 0, sampleTime);
         }
     }
 
-    private void handleTimerTask(GraphView graph1, GraphView graph2, GraphView graph3, GraphView graph4, GraphView graph5, GraphView graph6){
+    private void updatePlotsWithServerResponse(GraphView graph1, GraphView graph2, GraphView graph3, GraphView graph4, GraphView graph5, GraphView graph6){
         timerTask = new TimerTask() {
             @Override
             public void run() {
                 handler.post( () -> {
-                    //TODO: Set correct URL's
-                    sendGetRequest(pressureData, graph1, serverIoT.getFileUrl());
+                    sendGetRequest(pressureData, graph1, serverIoT.getFileUrl3());
                     sendGetRequest(humidityData, graph2, serverIoT.getFileUrl());
-                    sendGetRequest(temperatureData, graph3, serverIoT.getFileUrl());
-                    sendGetRequest(yawData,graph4, serverIoT.getFileUrl());
-                    sendGetRequest(pitchData,graph5, serverIoT.getFileUrl());
-                    sendGetRequest(rollData,graph6, serverIoT.getFileUrl());
+                    sendGetRequest(temperatureData, graph3, serverIoT.getFileUrl2());
+                    sendGetRequest(yawData,graph4, serverIoT.getFileUrl4());
+                    sendGetRequest(pitchData,graph5, serverIoT.getFileUrl5());
+                    sendGetRequest(rollData,graph6, serverIoT.getFileUrl6());
                     currentRequestTime += sampleTime;
                 });
             }
@@ -145,12 +132,9 @@ public class GraphsActivityViewModel extends ViewModel {
         return "Sample time: " + String.valueOf(sampleTime) + "ms";
     }
 
-    public String getIp() {
-        return ip;
-    }
 
     public void setIp(String ip) {
-        this.ip = ip;
+        serverIoT.ip = ip;
     }
 
     public int getSampleTime() {

@@ -14,17 +14,32 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 
 public class ServerIoT {
-    public String ip;
+    public  String ip = "192.168.33.5";
     public RequestQueue queue;
 
-    public ServerIoT(String ip, Context context) {
-        this.ip = ip;
+    public ServerIoT(Context context) {
         this.queue = Volley.newRequestQueue(context.getApplicationContext());
     }
 
     public String getFileUrl(){
-        return "http://" + ip + "/resource.php";
+        return "http://" + ip + "/chartdata_desktop.json";
     }
+    public String getFileUrl2(){
+        return "http://" + ip + "/chartdata_desktop2.json";
+    }
+    public String getFileUrl3(){
+        return "http://" + ip + "/chartdata_desktop3.json";
+    }
+    public String getFileUrl4(){
+        return "http://" + ip + "/chartdata_desktop4.json";
+    }
+    public String getFileUrl5(){
+        return "http://" + ip + "/chartdata_desktop5.json";
+    }
+    public String getFileUrl6(){
+        return "http://" + ip + "/chartdata_desktop6.json";
+    }
+
 
     public String getListUrl(){
         return  "http://" + ip + "/datalist.json";

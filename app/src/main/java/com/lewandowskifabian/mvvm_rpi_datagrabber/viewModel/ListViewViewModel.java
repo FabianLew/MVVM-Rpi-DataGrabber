@@ -33,7 +33,7 @@ public class ListViewViewModel extends ViewModel {
     public boolean btnState = true;
 
     public void Init(Context context){
-        serverIoT = new ServerIoT("192.168.33.5",context.getApplicationContext());
+        serverIoT = new ServerIoT(context.getApplicationContext());
         vmList = new ArrayList<>(6);
         adapter = new MeasurementsAdapter(vmList);
     }

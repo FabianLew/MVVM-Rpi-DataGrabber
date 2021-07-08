@@ -10,6 +10,7 @@
     <color name="grey">#FF808080</color>
     <color name="dim_grey">#FF696969</color>
     <color name="light_grey">#FFD3D3D3</color>
+    <color name="red">#FF0000</color>
     <dimen name="ledIndWidth">0dp</dimen>
     <dimen name="ledIndHeight">35dp</dimen>
     <dimen name="ledIndMarginTopBottom">2dp</dimen>

@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 
 import com.lewandowskifabian.mvvm_rpi_datagrabber.R;
 import com.lewandowskifabian.mvvm_rpi_datagrabber.model.LedDisplayModel;
@@ -32,12 +33,13 @@ public class LedDisplayActivity extends AppCompatActivity {
     private View colorView;
     private EditText urlText;
     private Button sendBtn, clearBtn, nextBtn,prevBtn;
+    private TextView stateBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_led_display);
 
-        serverIoT = new ServerIoT("192.168.33.5", this);
+        serverIoT = new ServerIoT( this);
         displayModel = new LedDisplayModel();
         preview = new LedModel();
 
@@ -61,6 +63,8 @@ public class LedDisplayActivity extends AppCompatActivity {
         clearBtn = (Button)findViewById(R.id.clearBtn);
         prevBtn = (Button)findViewById(R.id.prevBtn2);
         nextBtn = (Button)findViewById(R.id.nextBtn2);
+        stateBtn = (TextView)findViewById(R.id.stateBtn);
+
 
         SeekBar redSeekBar = (SeekBar) findViewById(R.id.seekBarR);
         redSeekBar.setMax(255);
@@ -107,6 +111,7 @@ public class LedDisplayActivity extends AppCompatActivity {
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                stateBtn.setText("State: Send data");
                 serverIoT.putControlRequest(displayModel.getControlJsonArray());
             }
         });
@@ -114,6 +119,7 @@ public class LedDisplayActivity extends AppCompatActivity {
         clearBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                stateBtn.setText("State: Clear data");
                 TableLayout tb = (TableLayout)findViewById(R.id.led_table);
                 View ledInd;
                 for(int i = 0; i < displayModel.ledX; i++) {
@@ -122,6 +128,7 @@ public class LedDisplayActivity extends AppCompatActivity {
                         setLedViewColor(ledInd, nullColor);
                     }
                 }
+                serverIoT.putControlRequest(displayModel.getControlJsonArrayNull());
             }
         });
 
@@ -139,6 +146,7 @@ public class LedDisplayActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
     }
 
     private RelativeLayout addLedIndicatorToTableLayout(int x, int y)
@@ -193,6 +201,7 @@ public class LedDisplayActivity extends AppCompatActivity {
             int[] pos = ledTagToIndex((String)v.getTag());
             // Update LED display data model
             displayModel.setLedModel(pos[0],pos[1], preview);
+            stateBtn.setText("State: Data not sent");
         }
     };
 
