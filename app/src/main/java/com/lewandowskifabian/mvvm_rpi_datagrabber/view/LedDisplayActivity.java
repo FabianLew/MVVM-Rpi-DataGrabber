@@ -111,7 +111,7 @@ public class LedDisplayActivity extends AppCompatActivity {
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                stateBtn.setText("State: Send data");
+                stateBtn.setText("Data sent");
                 serverIoT.putControlRequest(displayModel.getControlJsonArray());
             }
         });
@@ -119,7 +119,7 @@ public class LedDisplayActivity extends AppCompatActivity {
         clearBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                stateBtn.setText("State: Clear data");
+                stateBtn.setText("Data clear");
                 TableLayout tb = (TableLayout)findViewById(R.id.led_table);
                 View ledInd;
                 for(int i = 0; i < displayModel.ledX; i++) {
@@ -201,7 +201,7 @@ public class LedDisplayActivity extends AppCompatActivity {
             int[] pos = ledTagToIndex((String)v.getTag());
             // Update LED display data model
             displayModel.setLedModel(pos[0],pos[1], preview);
-            stateBtn.setText("State: Data not sent");
+            stateBtn.setText("Data not sent");
         }
     };
 
